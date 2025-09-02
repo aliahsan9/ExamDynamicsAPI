@@ -1,13 +1,11 @@
+// Interfaces/Repositories/IContactMessageRepository.cs
 using ExamDynamicsAPI.Core.Models;
+using System.Threading.Tasks;
 
 namespace ExamDynamicsAPI.Core.Interfaces.Repositories
 {
     public interface IContactMessageRepository
     {
-        Task<IEnumerable<ContactMessage>> GetAllAsync();
-        Task<ContactMessage?> GetByIdAsync(int id);
-        Task<ContactMessage> AddAsync(ContactMessage contactMessage);
-        Task<ContactMessage?> UpdateAsync(ContactMessage contactMessage);
-        Task<bool> DeleteAsync(int id);
+        Task AddAsync(ContactMessage contactMessage);
     }
 }

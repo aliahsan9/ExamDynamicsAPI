@@ -10,7 +10,7 @@ namespace ExamDynamicsAPI.WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles = "Admin")]
+    // [Authorize(Roles = "Admin")]
     public class OptionController : ControllerBase
     {
         private readonly IOptionService _service;
@@ -21,14 +21,14 @@ namespace ExamDynamicsAPI.WebAPI.Controllers
             _service = service;
             _mapper = mapper;
         }
-       [AllowAnonymous]
+    //    [AllowAnonymous]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<OptionDto>>> GetAll()
         {
             var options = await _service.GetAllAsync();
             return Ok(options);
         }
-        [AllowAnonymous]
+        // [AllowAnonymous]
         [HttpGet("{id}")]
         public async Task<ActionResult<OptionDto>> GetById(int id)
         {

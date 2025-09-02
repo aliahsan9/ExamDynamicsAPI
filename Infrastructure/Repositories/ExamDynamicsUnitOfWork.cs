@@ -26,7 +26,6 @@ namespace ExamDynamicsAPI.Infrastructure.Repositories
         public IUserExamProgressRepository UserProgress { get; }
         public IAnnouncementRepository Announcements { get; }
         public IFaqRepository Faqs { get; }
-        public IContactMessageRepository ContactMessages { get; }
 
         public ExamDynamicsUnitOfWork(
             ExamDynamicsDbContext context,
@@ -46,8 +45,7 @@ namespace ExamDynamicsAPI.Infrastructure.Repositories
             IBookmarkRepository bookmarks,
             IUserExamProgressRepository userProgress,
             IAnnouncementRepository announcements,
-            IFaqRepository faqs,
-            IContactMessageRepository contactMessages
+            IFaqRepository faqs
         )
         {
             _context = context;
@@ -69,7 +67,6 @@ namespace ExamDynamicsAPI.Infrastructure.Repositories
             UserProgress = userProgress;
             Announcements = announcements;
             Faqs = faqs;
-            ContactMessages = contactMessages;
         }
 
         // ================= Save Changes =================

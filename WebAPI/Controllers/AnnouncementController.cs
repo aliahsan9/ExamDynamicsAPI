@@ -9,7 +9,7 @@ namespace ExamDynamicsAPI.WebAPI.Controllers
     [ApiController]
     [Route("api/[controller]")]
     [Authorize(Roles = "Admin")]
-
+ 
     public class AnnouncementsController : ControllerBase
     {
         private readonly IAnnouncementService _service;

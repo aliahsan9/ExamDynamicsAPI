@@ -75,7 +75,7 @@ namespace ExamDynamicsAPI.WebAPI.Controllers
             });
         }
     }
-
+ 
     // DTOs
     public class LoginDto
     {
@@ -91,4 +91,4 @@ namespace ExamDynamicsAPI.WebAPI.Controllers
         public string Password { get; set; } = string.Empty;
         public string Role { get; set; } = "Student"; // default role
     }
-}
+} 

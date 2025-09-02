@@ -8,7 +8,7 @@ using System.Text;
 
 namespace ExamDynamicsAPI.Applications.Services.Auth
 {
-    public class TokenService : ITokenService
+    public class TokenService : ITokenService  
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IConfiguration _configuration;

@@ -1,14 +1,11 @@
+// Interfaces/Services/IContactMessageService.cs
 using ExamDynamicsAPI.Core.DTOs.ContactMessageDTOs;
+using System.Threading.Tasks;
 
 namespace ExamDynamicsAPI.Core.Interfaces.Services
-
 {
     public interface IContactMessageService
     {
-        Task<IEnumerable<ContactMessageDto>> GetAllAsync();
-        Task<ContactMessageDto?> GetByIdAsync(int id);
-        Task<ContactMessageDto> AddAsync(CreateContactMessageDto createDto);
-        Task<ContactMessageDto?> UpdateAsync(int id, UpdateContactMessageDto updateDto);
-        Task<bool> DeleteAsync(int id);
+        Task SendMessageAsync(ContactMessageDto dto);
     }
 }

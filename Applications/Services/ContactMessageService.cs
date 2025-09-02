@@ -1,97 +1,58 @@
+// Services/ContactMessageService.cs
 using ExamDynamicsAPI.Core.DTOs.ContactMessageDTOs;
 using ExamDynamicsAPI.Core.Interfaces.Repositories;
 using ExamDynamicsAPI.Core.Interfaces.Services;
 using ExamDynamicsAPI.Core.Models;
+using Microsoft.Extensions.Configuration;
+using System.Net;
+using System.Net.Mail;
+using System.Threading.Tasks;
 
 namespace ExamDynamicsAPI.Applications.Services
-
 {
     public class ContactMessageService : IContactMessageService
     {
         private readonly IContactMessageRepository _repository;
+        private readonly IConfiguration _configuration;
 
-        public ContactMessageService(IContactMessageRepository repository)
+        public ContactMessageService(IContactMessageRepository repository, IConfiguration configuration)
         {
             _repository = repository;
+            _configuration = configuration;
         }
 
-        public async Task<IEnumerable<ContactMessageDto>> GetAllAsync()
+        public async Task SendMessageAsync(ContactMessageDto dto)
         {
-            var messages = await _repository.GetAllAsync();
-            return messages.Select(m => new ContactMessageDto
+            var contactMessage = new ContactMessage
             {
-                ContactMessageId = m.ContactMessageId,
-                Name = m.Name,
-                Email = m.Email,
-                Message = m.Message,
-                SentAt = m.SentAt
-            });
-        }
-
-        public async Task<ContactMessageDto?> GetByIdAsync(int id)
-        {
-            var message = await _repository.GetByIdAsync(id);
-            if (message == null) return null;
-
-            return new ContactMessageDto
-            { 
-                ContactMessageId = message.ContactMessageId,
-                Name = message.Name,
-                Email = message.Email,
-                Message = message.Message,
-                SentAt = message.SentAt 
-            };
-        }
-
-        public async Task<ContactMessageDto> AddAsync(CreateContactMessageDto createDto)
-        {
-            var model = new ContactMessage
-            {
-                Name = createDto.Name,
-                Email = createDto.Email,
-                Message = createDto.Message,
-                SentAt = DateTime.UtcNow
+                UserEmail = dto.UserEmail,
+                Message = dto.Message
             };
 
-            var created = await _repository.AddAsync(model);
+            // Save to DB
+            await _repository.AddAsync(contactMessage);
 
-            return new ContactMessageDto
+            // Send Email
+            var smtpSection = _configuration.GetSection("SmtpSettings");
+            string smtpServer = smtpSection["Server"];
+            int port = int.Parse(smtpSection["Port"]);
+            string senderEmail = smtpSection["SenderEmail"];
+            string password = smtpSection["Password"];
+            string receiverEmail = smtpSection["ReceiverEmail"]; // Your website email
+
+            using (var client = new SmtpClient(smtpServer, port))
             {
-                ContactMessageId = created.ContactMessageId,
-                Name = created.Name,
-                Email = created.Email,
-                Message = created.Message,
-                SentAt = created.SentAt
-            };
-        }
-  
-        public async Task<ContactMessageDto?> UpdateAsync(int id, UpdateContactMessageDto updateDto)
-        {
-            var model = new ContactMessage
-            {
-                ContactMessageId = id,
-                Name = updateDto.Name,
-                Email = updateDto.Email,
-                Message = updateDto.Message,
-                SentAt = DateTime.UtcNow
-            };
+                client.Credentials = new NetworkCredential(senderEmail, password);
+                client.EnableSsl = true;
 
-            var updated = await _repository.UpdateAsync(model);
-            if (updated == null) return null;
+                var mailMessage = new MailMessage(senderEmail, receiverEmail)
+                {
+                    Subject = "New Contact Message from Website",
+                    Body = $"From: {dto.UserEmail}\n\nMessage:\n{dto.Message}"
+                };
 
-            return new ContactMessageDto
-            {
-                ContactMessageId = updated.ContactMessageId,
-                Name = updated.Name,
-                Email = updated.Email,
-                Message = updated.Message,
-                SentAt = updated.SentAt
-            };
-        }
-
-        public async Task<bool> DeleteAsync(int id)
-        {
-            return await _repository.DeleteAsync(id);
+                await client.SendMailAsync(mailMessage);
+            }
         }
     }
 }

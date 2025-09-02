@@ -8,7 +8,7 @@ namespace ExamDynamicsAPI.WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles = "Admin")]
+    // [Authorize(Roles = "Admin")]
     public class QuestionController : ControllerBase
     {
         private readonly IQuestionService _questionService;
@@ -17,7 +17,7 @@ namespace ExamDynamicsAPI.WebAPI.Controllers
         {
             _questionService = questionService;
         }
-         [AllowAnonymous]
+        //  [AllowAnonymous]
         // GET: api/Question
         [HttpGet]
         public async Task<IActionResult> GetAllQuestions()
@@ -25,7 +25,7 @@ namespace ExamDynamicsAPI.WebAPI.Controllers
             var questions = await _questionService.GetAllAsync();
             return Ok(questions);
         }
-       [AllowAnonymous]
+    //    [AllowAnonymous]
         // GET: api/Question/5
         [HttpGet("{id}")]
         public async Task<IActionResult> GetQuestionById(int id)

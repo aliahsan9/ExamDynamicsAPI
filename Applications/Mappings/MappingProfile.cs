@@ -4,7 +4,6 @@ using ExamDynamicsAPI.Core.DTOs.AITutorDTOs;
 using ExamDynamicsAPI.Core.DTOs.AnnouncementDTOs;
 using ExamDynamicsAPI.Core.DTOs.BlogPostDTOs;
 using ExamDynamicsAPI.Core.DTOs.BookmarkDTOs;
-using ExamDynamicsAPI.Core.DTOs.ContactMessageDTOs;
 using ExamDynamicsAPI.Core.DTOs.ExamDTOs;
 using ExamDynamicsAPI.Core.DTOs.FaqDTOs;
 using ExamDynamicsAPI.Core.DTOs.OptionDTOs;
@@ -106,11 +105,6 @@ namespace ExamDynamicsAPI.Applications.Mappings
             CreateMap<Faq, FaqDto>().ReverseMap();
             CreateMap<CreateFaqDto, Faq>();
             CreateMap<UpdateFaqDto, Faq>();
-
-            // ContactMessage
-            CreateMap<ContactMessage, ContactMessageDto>().ReverseMap();
-            CreateMap<CreateContactMessageDto, ContactMessage>();
-            CreateMap<UpdateContactMessageDto, ContactMessage>();
         }
     }
 }

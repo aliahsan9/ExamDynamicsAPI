@@ -89,7 +89,7 @@ namespace ExamDynamicsAPI.Infrastructure.Seeders
                 };
                 context.Exams.AddRange(exams);
                 await context.SaveChangesAsync();
-            }
+            }  
 
             // ==================== Exam Categories ====================
             if (!context.ExamCategories.Any())
@@ -312,19 +312,6 @@ This ensures images are always visible and load faster for users.",
     await context.SaveChangesAsync();
 }
 
-
-            // ==================== Contact Messages ====================
-            if (!context.ContactMessages.Any())
-            {
-                context.ContactMessages.Add(new ContactMessage
-                {
-                    Name = "Visitor",
-                    Email = "visitor@example.com",
-                    Message = "This is a sample contact message.",
-                    SentAt = DateTime.UtcNow
-                });
-                await context.SaveChangesAsync();
-            }
 
             // ==================== Subscriptions ====================
             if (!context.Subscriptions.Any())

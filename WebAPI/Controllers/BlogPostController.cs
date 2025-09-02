@@ -7,6 +7,7 @@ namespace ExamDynamicsAPI.WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    // [Authorize(Roles = "Admin")]
     public class BlogPostController : ControllerBase
     {
         private readonly IBlogPostService _blogPostService;
@@ -17,7 +18,7 @@ namespace ExamDynamicsAPI.WebAPI.Controllers
             _blogPostService = blogPostService;
             _mapper = mapper;
         }
-
+         
         [HttpGet]
         public async Task<ActionResult<IEnumerable<BlogPostDto>>> GetAll()
         {

@@ -16,6 +16,8 @@ namespace ExamDynamicsAPI.Infrastructure.Data
         // Core User Management
         public DbSet<UserProfile> UserProfiles { get; set; } = null!;
         public DbSet<UserProgress> UserProgress { get; set; } = null!;
+         public DbSet<ContactMessage> ContactMessages { get; set; }
+
 
         // Exams & Subjects
         public DbSet<Exam> Exams { get; set; } = null!;
@@ -64,7 +66,6 @@ namespace ExamDynamicsAPI.Infrastructure.Data
 
         // Support Section
         public DbSet<Faq> Faqs { get; set; } = null!;
-        public DbSet<ContactMessage> ContactMessages { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -151,13 +152,6 @@ namespace ExamDynamicsAPI.Infrastructure.Data
                 .HasOne(b => b.Author)
                 .WithMany(u => u.BlogPosts)
                 .HasForeignKey(b => b.AuthorId);
-
-            // ===== ContactMessage - User (optional) =====
-            modelBuilder.Entity<ContactMessage>()
-                .HasOne(c => c.ApplicationUser)
-                .WithMany(u => u.ContactMessages)
-                .HasForeignKey(c => c.UserId)
-                .OnDelete(DeleteBehavior.SetNull);
 
             // ===== ExamRegistration - User & Exam =====
             modelBuilder.Entity<ExamRegistration>()

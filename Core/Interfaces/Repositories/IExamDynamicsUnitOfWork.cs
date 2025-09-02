@@ -25,11 +25,10 @@ namespace ExamDynamicsAPI.Core.Interfaces.Repositories
         IUserExamProgressRepository UserProgress { get; }
         IBookmarkRepository Bookmarks { get; }
 
-        // ================= Announcements / Blog / FAQ / Contact / Feedback =================
+        // ================= Announcements / Blog / FAQ / Feedback =================
         IAnnouncementRepository Announcements { get; }
         IBlogPostRepository BlogPosts { get; }
         IFaqRepository Faqs { get; }
-        IContactMessageRepository ContactMessages { get; }
         IFeedbackRepository Feedbacks { get; }
         INotificationRepository Notifications { get; }
 

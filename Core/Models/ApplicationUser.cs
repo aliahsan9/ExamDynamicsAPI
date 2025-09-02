@@ -16,7 +16,6 @@ namespace ExamDynamicsAPI.Core.Models
         public virtual ICollection<Note> Notes { get; set; } = new HashSet<Note>();
         public virtual ICollection<Answer> Answers { get; set; } = new HashSet<Answer>();
         public virtual ICollection<ExamRegistration> ExamRegistrations { get; set; } = new HashSet<ExamRegistration>();
-        public virtual ICollection<ContactMessage> ContactMessages { get; set; } = new HashSet<ContactMessage>();
     }
 
     public class ApplicationRole : IdentityRole<int>
