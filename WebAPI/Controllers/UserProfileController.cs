@@ -7,7 +7,7 @@ namespace ExamDynamicsAPI.WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+    // [Authorize]
     public class UserProfileController : ControllerBase
     {
         private readonly IUserProfileService _service;

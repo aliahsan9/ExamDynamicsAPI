@@ -13,4 +13,4 @@ namespace ExamDynamicsAPI.Core.DTOs.UserProfileDTOs
         [MaxLength(1000)]
         public string? Bio { get; set; }
     }
-}
+} 

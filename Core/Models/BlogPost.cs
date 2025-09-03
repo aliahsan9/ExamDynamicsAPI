@@ -14,6 +14,7 @@ namespace ExamDynamicsAPI.Core.Models
 
         [Required]
         public string Content { get; set; } = string.Empty;
+        public string ThumbnailUrl { get; set; } = string.Empty;
 
         // Foreign key to Identity User
         [ForeignKey(nameof(Author))]
