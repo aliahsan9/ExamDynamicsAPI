@@ -15,6 +15,7 @@ namespace ExamDynamicsAPI.Core.Models
 
         [Required]
         public string CorrectAnswer { get; set; } = string.Empty;
+        public string? Explanation { get; set; }
 
         // Foreign key to Topic
         [Required]

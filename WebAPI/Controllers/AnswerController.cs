@@ -8,7 +8,7 @@ namespace ExamDynamicsAPI.WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles = "Admin")] // Only admins can create/update/delete
+    // [Authorize(Roles = "Admin")] // Only admins can create/update/delete
     public class AnswerController : ControllerBase
     {
         private readonly IAnswerService _answerService;
@@ -33,7 +33,7 @@ namespace ExamDynamicsAPI.WebAPI.Controllers
             return CreatedAtAction(nameof(GetById), new { id = answer.Id }, answer);
         }
 
-        [AllowAnonymous]
+        // [AllowAnonymous]
         // ================= GET BY ID =================
         [HttpGet("{id}")]
         public async Task<ActionResult<AnswerReadDto>> GetById(int id)
@@ -43,7 +43,7 @@ namespace ExamDynamicsAPI.WebAPI.Controllers
             return Ok(answer);
         }
 
-        [AllowAnonymous]
+        // [AllowAnonymous]
         // ================= GET ALL =================
         [HttpGet]
         public async Task<ActionResult<IEnumerable<AnswerReadDto>>> GetAll()
