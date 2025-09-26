@@ -1,6 +1,4 @@
 using AutoMapper;
-using ExamDynamicsAPI.Core.DTOs.AiMessageDTOs;
-using ExamDynamicsAPI.Core.DTOs.AITutorDTOs;
 using ExamDynamicsAPI.Core.DTOs.AnnouncementDTOs;
 using ExamDynamicsAPI.Core.DTOs.BlogPostDTOs;
 using ExamDynamicsAPI.Core.DTOs.BookmarkDTOs;
@@ -67,19 +65,10 @@ namespace ExamDynamicsAPI.Applications.Mappings
             CreateMap<CreateStudyMaterialDto, StudyMaterial>();
             CreateMap<UpdateStudyMaterialDto, StudyMaterial>();
 
-            // AiSession
-            CreateMap<AiSession, AiSessionDto>().ReverseMap();
-            CreateMap<CreateAiSessionDto, AiSession>();
-            CreateMap<UpdateAiSessionDto, AiSession>();
-
   // ================= Announcement =================
             CreateMap<Announcement, AnnouncementReadDto>().ReverseMap();
             CreateMap<AnnouncementCreateDto, Announcement>();
             CreateMap<AnnouncementUpdateDto, Announcement>();
-            // AiMessage
-            CreateMap<AiMessage, AiMessageDto>().ReverseMap();
-            CreateMap<CreateAiMessageDto, AiMessage>();
-            CreateMap<UpdateAiMessageDto, AiMessage>();
 
             // Bookmark
             CreateMap<Bookmark, BookmarkDto>().ReverseMap();

@@ -20,8 +20,6 @@ namespace ExamDynamicsAPI.Infrastructure.Repositories
         public IQuestionRepository Questions { get; }
         public IOptionRepository Options { get; }
         public IStudyMaterialRepository StudyMaterials { get; }
-        public IAiSessionRepository AiSessions { get; }
-        public IAiMessageRepository AiMessages { get; }
         public IBookmarkRepository Bookmarks { get; }
         public IUserExamProgressRepository UserProgress { get; }
         public IAnnouncementRepository Announcements { get; }
@@ -40,8 +38,6 @@ namespace ExamDynamicsAPI.Infrastructure.Repositories
             IQuestionRepository questions,
             IOptionRepository options,
             IStudyMaterialRepository studyMaterials,
-            IAiSessionRepository aiSessions,
-            IAiMessageRepository aiMessages,
             IBookmarkRepository bookmarks,
             IUserExamProgressRepository userProgress,
             IAnnouncementRepository announcements,
@@ -61,8 +57,6 @@ namespace ExamDynamicsAPI.Infrastructure.Repositories
             Questions = questions;
             Options = options;
             StudyMaterials = studyMaterials;
-            AiSessions = aiSessions;
-            AiMessages = aiMessages;
             Bookmarks = bookmarks;
             UserProgress = userProgress;
             Announcements = announcements;

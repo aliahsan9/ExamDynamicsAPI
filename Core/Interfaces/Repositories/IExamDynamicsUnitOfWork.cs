@@ -17,10 +17,6 @@ namespace ExamDynamicsAPI.Core.Interfaces.Repositories
         IStudyMaterialRepository StudyMaterials { get; }
         IExamRegistrationRepository ExamRegistrations { get; }
 
-        // ================= AI =================
-        IAiSessionRepository AiSessions { get; } 
-        IAiMessageRepository AiMessages { get; }
-
         // ================= Progress / Bookmarks =================
         IUserExamProgressRepository UserProgress { get; }
         IBookmarkRepository Bookmarks { get; }

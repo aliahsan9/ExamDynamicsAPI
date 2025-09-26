@@ -7,6 +7,7 @@ using ExamDynamicsAPI.Core.Models;
 using ExamDynamicsAPI.Infrastructure.Data;
 using ExamDynamicsAPI.Infrastructure.Repositories;
 using ExamDynamicsAPI.Infrastructure.Seeders;
+using ExamDynamicsAPI.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -35,6 +36,9 @@ builder.Services.AddIdentity<ApplicationUser, ApplicationRole>(options =>
 // JWT Authentication
 var jwtKey = builder.Configuration["Jwt:Key"]!;
 var jwtIssuer = builder.Configuration["Jwt:Issuer"]!;
+
+builder.Services.AddHttpClient();
+builder.Services.AddScoped<IChatService, ChatService>();
 
 builder.Services.AddAuthentication(options =>
 {
@@ -68,8 +72,6 @@ builder.Services.AddScoped<IQuestionRepository, QuestionRepository>();
 builder.Services.AddScoped<IOptionRepository, OptionRepository>();
 builder.Services.AddScoped<IStudyMaterialRepository, StudyMaterialRepository>();
 builder.Services.AddScoped<IExamRegistrationRepository, ExamRegistrationRepository>();
-builder.Services.AddScoped<IAiSessionRepository, AiSessionRepository>();
-builder.Services.AddScoped<IAiMessageRepository, AiMessageRepository>();
 builder.Services.AddScoped<IExamService, ExamService>();
 builder.Services.AddScoped<IExamMaterialRepository, ExamMaterialRepository>();
 builder.Services.AddScoped<IExamMaterialService, ExamMaterialService>();

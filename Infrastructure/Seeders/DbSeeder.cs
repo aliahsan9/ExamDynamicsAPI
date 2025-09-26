@@ -89,7 +89,7 @@ namespace ExamDynamicsAPI.Infrastructure.Seeders
                 };
                 context.Exams.AddRange(exams);
                 await context.SaveChangesAsync();
-            }  
+            }
 
             // ==================== Exam Categories ====================
             if (!context.ExamCategories.Any())
@@ -233,10 +233,10 @@ namespace ExamDynamicsAPI.Infrastructure.Seeders
                 await context.SaveChangesAsync();
             }
 
-           // ==================== Blog Posts ====================
-if (!context.BlogPosts.Any() && adminUser != null)
-{
-    var blogPosts = new List<BlogPost>
+            // ==================== Blog Posts ====================
+            if (!context.BlogPosts.Any() && adminUser != null)
+            {
+                var blogPosts = new List<BlogPost>
     {
         new BlogPost
         {
@@ -308,9 +308,9 @@ This ensures images are always visible and load faster for users.",
         }
     };
 
-    await context.BlogPosts.AddRangeAsync(blogPosts);
-    await context.SaveChangesAsync();
-}
+                await context.BlogPosts.AddRangeAsync(blogPosts);
+                await context.SaveChangesAsync();
+            }
 
 
             // ==================== Subscriptions ====================
@@ -337,29 +337,6 @@ This ensures images are always visible and load faster for users.",
                     });
                 }
                 await context.SaveChangesAsync();
-            }
-
-            // ==================== AI Sessions & Messages ====================
-            if (!context.AiSessions.Any())
-            {
-                var student = await userManager.FindByEmailAsync("student@example.com");
-                if (student != null)
-                {
-                    var session = new AiSession
-                    {
-                        UserId = student.Id,
-                        StartedAt = DateTime.UtcNow
-                    };
-                    context.AiSessions.Add(session);
-                    await context.SaveChangesAsync();
-
-                    context.AiMessages.AddRange(new List<AiMessage>
-                    {
-                        new AiMessage { AiSessionId = session.AiSessionId, Content = "Hello AI!", IsRead = true, SentAt = DateTime.UtcNow },
-                        new AiMessage { AiSessionId = session.AiSessionId, Content = "Hello! How can I help you?", IsRead = false, SentAt = DateTime.UtcNow }
-                    });
-                    await context.SaveChangesAsync();
-                }
             }
         }
     }

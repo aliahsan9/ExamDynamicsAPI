@@ -36,10 +36,6 @@ namespace ExamDynamicsAPI.Infrastructure.Data
         // Study Material
         public DbSet<StudyMaterial> StudyMaterials { get; set; } = null!;
 
-        // AI Chat System
-        public DbSet<AiSession> AiSessions { get; set; } = null!;
-        public DbSet<AiMessage> AiMessages { get; set; } = null!;
-
         // Notifications, Materials, Results, Settings
         public DbSet<Notification> Notifications { get; set; } = null!;
         public DbSet<ExamMaterial> ExamMaterials { get; set; } = null!;
@@ -140,13 +136,6 @@ namespace ExamDynamicsAPI.Infrastructure.Data
                 .WithMany()
                 .HasForeignKey(m => m.ReceiverId)
                 .OnDelete(DeleteBehavior.Restrict);
-
-            // ===== AiSession - AiMessage (1:Many) =====
-            modelBuilder.Entity<AiSession>()
-                .HasMany(s => s.Messages)
-                .WithOne(m => m.AiSession)
-                .HasForeignKey(m => m.AiSessionId);
-
             // ===== BlogPost - Author (User) =====
             modelBuilder.Entity<BlogPost>()
                 .HasOne(b => b.Author)
