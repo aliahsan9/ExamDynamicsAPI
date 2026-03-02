@@ -1,6 +1,4 @@
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using static ExamDynamicsAPI.Core.Models.Answer;
 
 namespace ExamDynamicsAPI.Core.Models
 {

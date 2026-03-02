@@ -1,4 +1,3 @@
-using AutoMapper;
 using ExamDynamicsAPI.Core.DTOs.BlogPostDTOs;
 using ExamDynamicsAPI.Core.Models;
 namespace ExamDynamicsAPI.Applications.Mappings

@@ -1,12 +1,9 @@
-// Services/ContactMessageService.cs
 using ExamDynamicsAPI.Core.DTOs.ContactMessageDTOs;
 using ExamDynamicsAPI.Core.Interfaces.Repositories;
 using ExamDynamicsAPI.Core.Interfaces.Services;
 using ExamDynamicsAPI.Core.Models;
-using Microsoft.Extensions.Configuration;
 using System.Net;
 using System.Net.Mail;
-using System.Threading.Tasks;
 
 namespace ExamDynamicsAPI.Applications.Services
 {
@@ -34,11 +31,11 @@ namespace ExamDynamicsAPI.Applications.Services
 
             // Send Email
             var smtpSection = _configuration.GetSection("SmtpSettings");
-            string smtpServer = smtpSection["Server"];
-            int port = int.Parse(smtpSection["Port"]);
-            string senderEmail = smtpSection["SenderEmail"];
-            string password = smtpSection["Password"];
-            string receiverEmail = smtpSection["ReceiverEmail"]; // Your website email
+            string smtpServer = smtpSection["Server"] ?? string.Empty;
+            int port = int.Parse(smtpSection["Port"] = string.Empty);
+            string senderEmail = smtpSection["SenderEmail"] = string.Empty;
+            string password = smtpSection["Password"] = string.Empty;
+            string receiverEmail = smtpSection["ReceiverEmail"] = string.Empty; // Your website email
 
             using (var client = new SmtpClient(smtpServer, port))
             {

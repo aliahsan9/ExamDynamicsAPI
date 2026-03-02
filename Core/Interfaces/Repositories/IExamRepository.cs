@@ -9,6 +9,6 @@ namespace ExamDynamicsAPI.Core.Interfaces.Repositories
         Task AddAsync(Exam exam);
         Task UpdateAsync(Exam exam);
         Task DeleteAsync(int id);
-        Task<IEnumerable<Exam>> GetBySubjectIdAsync(int subjectId); // ✅ Added
+        
     }
 }

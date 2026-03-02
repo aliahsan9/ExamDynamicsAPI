@@ -9,6 +9,5 @@ namespace ExamDynamicsAPI.Core.Interfaces.Services
         Task<ExamDto> CreateAsync(CreateExamDto createDto);
         Task<bool> UpdateAsync(int id, UpdateExamDto updateDto);
         Task<bool> DeleteAsync(int id);
-        Task<IEnumerable<ExamDto>> GetBySubjectIdAsync(int subjectId);
     }
 }

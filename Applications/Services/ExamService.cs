@@ -54,11 +54,5 @@ namespace ExamDynamicsAPI.Applications.Services
             await _repository.DeleteAsync(id);
             return true;
         }
-
-        public async Task<IEnumerable<ExamDto>> GetBySubjectIdAsync(int subjectId)
-        {
-            var exams = await _repository.GetBySubjectIdAsync(subjectId);
-            return _mapper.Map<IEnumerable<ExamDto>>(exams);
-        }
     }
 }

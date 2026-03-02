@@ -1,4 +1,3 @@
-using AutoMapper;
 using ExamDynamicsAPI.Core.Models;
 using ExamDynamicsAPI.Core.DTOs.MessageDTOs;
 

@@ -1,8 +1,6 @@
-// Controllers/ContactController.cs
 using ExamDynamicsAPI.Core.DTOs.ContactMessageDTOs;
 using ExamDynamicsAPI.Core.Interfaces.Services;
 using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
 
 namespace ExamDynamicsAPI.WebAPI.Controllers
 {

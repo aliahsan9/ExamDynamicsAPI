@@ -4,6 +4,7 @@ using ExamDynamicsAPI.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ExamDynamicsAPI.Migrations
 {
     [DbContext(typeof(ExamDynamicsDbContext))]
-    partial class ExamDynamicsDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260302114749_DeletedSomeEntities")]
+    partial class DeletedSomeEntities
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -366,6 +369,9 @@ namespace ExamDynamicsAPI.Migrations
                     b.Property<string>("Explanation")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("QuizId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Text")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -374,7 +380,68 @@ namespace ExamDynamicsAPI.Migrations
 
                     b.HasIndex("ExamId");
 
+                    b.HasIndex("QuizId");
+
                     b.ToTable("Questions");
+                });
+
+            modelBuilder.Entity("ExamDynamicsAPI.Core.Models.Quiz", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Quizzes");
+                });
+
+            modelBuilder.Entity("ExamDynamicsAPI.Core.Models.UserQuiz", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("AttemptDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsPassed")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("QuizId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Score")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("QuizId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserQuiz");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
@@ -564,7 +631,30 @@ namespace ExamDynamicsAPI.Migrations
                         .WithMany()
                         .HasForeignKey("ExamId");
 
+                    b.HasOne("ExamDynamicsAPI.Core.Models.Quiz", null)
+                        .WithMany("Questions")
+                        .HasForeignKey("QuizId");
+
                     b.Navigation("Exam");
+                });
+
+            modelBuilder.Entity("ExamDynamicsAPI.Core.Models.UserQuiz", b =>
+                {
+                    b.HasOne("ExamDynamicsAPI.Core.Models.Quiz", "Quiz")
+                        .WithMany("UserQuizzes")
+                        .HasForeignKey("QuizId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ExamDynamicsAPI.Core.Models.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Quiz");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
@@ -649,6 +739,13 @@ namespace ExamDynamicsAPI.Migrations
                     b.Navigation("Answers");
 
                     b.Navigation("Options");
+                });
+
+            modelBuilder.Entity("ExamDynamicsAPI.Core.Models.Quiz", b =>
+                {
+                    b.Navigation("Questions");
+
+                    b.Navigation("UserQuizzes");
                 });
 #pragma warning restore 612, 618
         }

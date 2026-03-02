@@ -1,8 +1,6 @@
 using ExamDynamicsAPI.Core.Interfaces.Repositories;
 using ExamDynamicsAPI.Core.Interfaces.Services;
 using ExamDynamicsAPI.Core.Models;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace ExamDynamicsAPI.Applications.Services
 {

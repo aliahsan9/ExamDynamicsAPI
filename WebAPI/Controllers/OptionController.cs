@@ -1,10 +1,7 @@
 using AutoMapper;
 using ExamDynamicsAPI.Core.DTOs.OptionDTOs;
 using ExamDynamicsAPI.Core.Interfaces.Services;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace ExamDynamicsAPI.WebAPI.Controllers
 {

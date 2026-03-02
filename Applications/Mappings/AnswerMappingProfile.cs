@@ -1,5 +1,3 @@
-using AutoMapper;
-using ExamDynamicsAPI.Core.DTOs;
 using ExamDynamicsAPI.Core.DTOs.AnswerDTOs;
 using ExamDynamicsAPI.Core.Models;
 

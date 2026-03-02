@@ -1,7 +1,6 @@
 using AutoMapper;
 using ExamDynamicsAPI.Core.DTOs.ExamDTOs;
 using ExamDynamicsAPI.Core.Interfaces.Services;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ExamDynamicsAPI.WebAPI.Controllers
@@ -56,13 +55,6 @@ namespace ExamDynamicsAPI.WebAPI.Controllers
             var success = await _examService.DeleteAsync(id);
             if (!success) return NotFound();
             return NoContent();
-        }
-
-        [HttpGet("subject/{subjectId}")]
-        public async Task<ActionResult<IEnumerable<ExamDto>>> GetBySubjectId(int subjectId)
-        {
-            var exams = await _examService.GetBySubjectIdAsync(subjectId);
-            return Ok(exams);
         }
     }
 }

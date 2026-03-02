@@ -63,21 +63,6 @@ namespace ExamDynamicsAPI.Infrastructure.Seeders
                 await userManager.AddToRoleAsync(studentUser, "Student");
             }
 
-            // ==================== User Profiles ====================
-            if (!context.UserProfiles.Any())
-            {
-                foreach (var user in context.Users.ToList())
-                {
-                    context.UserProfiles.Add(new UserProfile
-                    {
-                        UserId = user.Id,
-                        Bio = $"This is {user.FullName}'s bio",
-                        ProfilePictureUrl = null!
-                    });
-                }
-                await context.SaveChangesAsync();
-            }
-
             // ==================== Exams ====================
             if (!context.Exams.Any())
             {
@@ -105,134 +90,6 @@ namespace ExamDynamicsAPI.Infrastructure.Seeders
                 await context.SaveChangesAsync();
             }
 
-            // ==================== Subjects ====================
-            if (!context.Subjects.Any())
-            {
-                foreach (var exam in context.Exams.ToList())
-                {
-                    context.Subjects.Add(new Subject
-                    {
-                        Name = $"{exam.Title} Subject",
-                        ExamId = exam.ExamId
-                    });
-                }
-                await context.SaveChangesAsync();
-            }
-
-            // ==================== Topics ====================
-            if (!context.Topics.Any())
-            {
-                foreach (var subject in context.Subjects.ToList())
-                {
-                    context.Topics.Add(new Topic
-                    {
-                        Name = $"{subject.Name} Topic",
-                        SubjectId = subject.SubjectId
-                    });
-                }
-                await context.SaveChangesAsync();
-            }
-
-            // ==================== Questions & Options ====================
-            if (!context.Questions.Any())
-            {
-                foreach (var topic in context.Topics.ToList())
-                {
-                    var question = new Question
-                    {
-                        Text = $"Sample question for {topic.Name}",
-                        TopicId = topic.Id
-                    };
-                    context.Questions.Add(question);
-                    await context.SaveChangesAsync();
-
-                    context.Options.AddRange(new List<Option>
-                    {
-                        new Option { Text = "Option A", QuestionId = question.QuestionId, IsCorrect = false },
-                        new Option { Text = "Option B", QuestionId = question.QuestionId, IsCorrect = true },
-                        new Option { Text = "Option C", QuestionId = question.QuestionId, IsCorrect = false },
-                        new Option { Text = "Option D", QuestionId = question.QuestionId, IsCorrect = false }
-                    });
-                    await context.SaveChangesAsync();
-                }
-            }
-
-            // ==================== User Progress ====================
-            if (!context.UserProgress.Any())
-            {
-                var students = await userManager.GetUsersInRoleAsync("Student");
-                var topics = context.Topics.ToList();
-
-                foreach (var student in students)
-                {
-                    foreach (var topic in topics)
-                    {
-                        context.UserProgress.Add(new UserProgress
-                        {
-                            UserId = student.Id,
-                            TopicId = topic.Id,
-                            ProgressPercent = 0,
-                            LastUpdated = DateTime.UtcNow
-                        });
-                    }
-                }
-                await context.SaveChangesAsync();
-            }
-
-            // ==================== Notes ====================
-            if (!context.Notes.Any())
-            {
-                var students = await userManager.GetUsersInRoleAsync("Student");
-                foreach (var student in students)
-                {
-                    context.Notes.Add(new Note
-                    {
-                        UserId = student.Id,
-                        Title = "Sample Note",
-                        Content = "This is a sample note.",
-                        CreatedAt = DateTime.UtcNow
-                    });
-                }
-                await context.SaveChangesAsync();
-            }
-
-            // ==================== Bookmarks ====================
-            if (!context.Bookmarks.Any())
-            {
-                var students = await userManager.GetUsersInRoleAsync("Student");
-                foreach (var student in students)
-                {
-                    context.Bookmarks.Add(new Bookmark
-                    {
-                        UserId = student.Id,
-                        Title = "Sample Bookmark",
-                        Url = "https://example.com",
-                        CreatedAt = DateTime.UtcNow
-                    });
-                }
-                await context.SaveChangesAsync();
-            }
-
-            // ==================== Exam Results ====================
-            if (!context.ExamResults.Any())
-            {
-                var students = await userManager.GetUsersInRoleAsync("Student");
-                foreach (var student in students)
-                {
-                    foreach (var exam in context.Exams.ToList())
-                    {
-                        context.ExamResults.Add(new ExamResult
-                        {
-                            UserId = student.Id,
-                            ExamId = exam.ExamId,
-                            Score = rand.Next(50, 100),
-                            TakenAt = DateTime.UtcNow
-                        });
-                    }
-                }
-                await context.SaveChangesAsync();
-            }
-
             // ==================== Blog Posts ====================
             if (!context.BlogPosts.Any() && adminUser != null)
             {
@@ -242,7 +99,7 @@ namespace ExamDynamicsAPI.Infrastructure.Seeders
         {
             Title = "Welcome to ExamDynamics",
             Content = "This is the first blog post!",
-            AuthorId = adminUser.Id, // ✅ adminUser.Id is already a string
+            AuthorId = adminUser.Id, 
             PublishedAt = DateTime.UtcNow,
             IsPublished = true
         },
@@ -309,33 +166,6 @@ This ensures images are always visible and load faster for users.",
     };
 
                 await context.BlogPosts.AddRangeAsync(blogPosts);
-                await context.SaveChangesAsync();
-            }
-
-
-            // ==================== Subscriptions ====================
-            if (!context.Subscriptions.Any())
-            {
-                context.Subscriptions.AddRange(new List<Subscription>
-                {
-                    new Subscription { Name = "Monthly", Price = 9.99m, DurationInDays = 30 },
-                    new Subscription { Name = "Yearly", Price = 99.99m, DurationInDays = 365 }
-                });
-                await context.SaveChangesAsync();
-            }
-
-            // ==================== Study Materials ====================
-            if (!context.StudyMaterials.Any())
-            {
-                foreach (var topic in context.Topics.ToList())
-                {
-                    context.StudyMaterials.Add(new StudyMaterial
-                    {
-                        Title = $"{topic.Name} Study Material",
-                        Content = "https://example.com/material.pdf",
-                        TopicId = topic.Id
-                    });
-                }
                 await context.SaveChangesAsync();
             }
         }

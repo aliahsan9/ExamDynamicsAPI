@@ -1,8 +1,6 @@
 using ExamDynamicsAPI.Core.Interfaces.Services;
 using ExamDynamicsAPI.Core.Models;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
 
 namespace ExamDynamicsAPI.WebAPI.Controllers
 {

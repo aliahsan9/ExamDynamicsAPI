@@ -1,6 +1,3 @@
-// Models/ContactMessage.cs
-using System;
-
 namespace ExamDynamicsAPI.Core.Models
 {
     public class ContactMessage

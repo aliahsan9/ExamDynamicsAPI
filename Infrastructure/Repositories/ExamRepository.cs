@@ -16,13 +16,12 @@ namespace ExamDynamicsAPI.Infrastructure.Repositories
 
         public async Task<IEnumerable<Exam>> GetAllAsync()
         {
-            return await _context.Exams.Include(e => e.Subjects).ToListAsync();
+            return await _context.Exams.AsNoTracking().ToListAsync();
         }
 
         public async Task<Exam?> GetByIdAsync(int id)
         {
-            return await _context.Exams.Include(e => e.Subjects)
-                                       .FirstOrDefaultAsync(e => e.ExamId == id);
+            return await _context.Exams.AsNoTracking().FirstOrDefaultAsync(e => e.ExamId == id);
         }
 
         public async Task AddAsync(Exam exam)
@@ -46,14 +45,5 @@ namespace ExamDynamicsAPI.Infrastructure.Repositories
                 await _context.SaveChangesAsync();
             }
         }
-
-        public async Task<IEnumerable<Exam>> GetBySubjectIdAsync(int subjectId)
-        {
-            return await _context.Exams
-                .Include(e => e.Subjects)
-                .Where(e => e.Subjects.Any(s => s.SubjectId == subjectId))
-                .ToListAsync();
-        }
     }
 }
-  

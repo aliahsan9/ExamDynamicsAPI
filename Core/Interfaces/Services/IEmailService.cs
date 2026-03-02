@@ -1,5 +1,3 @@
-using System.Threading.Tasks;
-
 namespace ExamDynamicsAPI.Core.Interfaces.Services
 {
     public interface IEmailService

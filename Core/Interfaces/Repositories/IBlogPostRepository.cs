@@ -6,7 +6,7 @@ namespace ExamDynamicsAPI.Core.Interfaces.Repositories
     {
         Task<IEnumerable<BlogPost>> GetPublishedPostsAsync();
 
-        // ✅ Change int to string
+        // Change int to string
         Task<IEnumerable<BlogPost>> GetPostsByAuthorAsync(int authorId);
     }
 }

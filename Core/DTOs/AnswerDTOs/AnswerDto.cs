@@ -1,4 +1,4 @@
-namespace ExamDynamicsAPI.Core.DTOs
+namespace ExamDynamicsAPI.Core.DTOs.AnswerDTOs
 {
     public class AnswerDto
     {

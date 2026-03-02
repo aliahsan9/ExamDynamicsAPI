@@ -1,9 +1,6 @@
-// Infrastructure/Repositories/ContactMessageRepository.cs
 using ExamDynamicsAPI.Core.Interfaces.Repositories;
 using ExamDynamicsAPI.Core.Models;
 using ExamDynamicsAPI.Infrastructure.Data;
-using Microsoft.EntityFrameworkCore;
-using System.Threading.Tasks;
 
 namespace ExamDynamicsAPI.Infrastructure.Repositories
 {

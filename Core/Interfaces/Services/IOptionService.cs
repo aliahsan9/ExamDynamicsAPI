@@ -1,6 +1,4 @@
 using ExamDynamicsAPI.Core.DTOs.OptionDTOs;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace ExamDynamicsAPI.Core.Interfaces.Services
 {

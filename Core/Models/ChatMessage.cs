@@ -1,4 +1,4 @@
-namespace ExamDynamicsAPI.Models
+namespace ExamDynamicsAPI.Core.Models
 {
     public class ChatMessage
     {

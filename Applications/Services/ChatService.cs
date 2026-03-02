@@ -4,10 +4,9 @@ using System.Text;
 using System.Text.Json;
 using ExamDynamicsAPI.Core.DTOs.ChatDTOs;
 using ExamDynamicsAPI.Core.Interfaces.Services;
+using ExamDynamicsAPI.Core.Models;
 using ExamDynamicsAPI.Infrastructure.Data;
-using ExamDynamicsAPI.Models;
-
-namespace ExamDynamicsAPI.Services
+namespace ExamDynamicsAPI.Applications.Services
 {
     public class ChatService : IChatService
     {

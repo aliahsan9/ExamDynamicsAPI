@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace ExamDynamicsAPI.Core.Models
@@ -15,16 +13,6 @@ namespace ExamDynamicsAPI.Core.Models
         public string Description { get; set; } = string.Empty;
 
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-
-        // Relations
-        // Exam can have multiple subjects
-public ICollection<Subject> Subjects { get; set; } = new List<Subject>();
-
-        // Exam registrations
-        public ICollection<ExamRegistration>? ExamRegistrations { get; set; }
-
-        // Exam results
-        public ICollection<ExamResult>? ExamResults { get; set; }
 
     }
 }

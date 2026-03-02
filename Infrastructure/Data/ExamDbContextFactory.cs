@@ -1,7 +1,5 @@
-using ExamDynamicsAPI.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
-using Microsoft.Extensions.Configuration;
 
 namespace ExamDynamicsAPI.Infrastructure.Data
 {

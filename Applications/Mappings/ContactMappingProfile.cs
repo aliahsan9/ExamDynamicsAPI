@@ -1,5 +1,3 @@
-// Mapping/ContactMappingProfile.cs
-using AutoMapper;
 using ExamDynamicsAPI.Core.DTOs.ContactMessageDTOs;
 using ExamDynamicsAPI.Core.Models;
 

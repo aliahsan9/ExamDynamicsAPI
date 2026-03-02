@@ -1,5 +1,3 @@
-using ExamDynamicsAPI.Core.DTOs.SubjectDTOs;
-
 namespace ExamDynamicsAPI.Core.DTOs.ExamDTOs
 {
  public class ExamDto
@@ -9,7 +7,5 @@ namespace ExamDynamicsAPI.Core.DTOs.ExamDTOs
         public string Description { get; set; } = string.Empty;
         public DateTime CreatedAt { get; set; }
 
-        // List of subjects
-        public List<SubjectDto>? Subjects { get; set; }
     }
 }

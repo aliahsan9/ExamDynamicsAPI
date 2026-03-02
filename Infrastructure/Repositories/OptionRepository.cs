@@ -2,8 +2,6 @@ using ExamDynamicsAPI.Core.Interfaces.Repositories;
 using ExamDynamicsAPI.Core.Models;
 using ExamDynamicsAPI.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace ExamDynamicsAPI.Infrastructure.Repositories
 {
