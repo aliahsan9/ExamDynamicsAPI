@@ -1,4 +1,3 @@
-// DTOs/ContactMessageDto.cs
 namespace ExamDynamicsAPI.Core.DTOs.ContactMessageDTOs
 {
     public class ContactMessageDto
@@ -7,4 +6,4 @@ namespace ExamDynamicsAPI.Core.DTOs.ContactMessageDTOs
         public string Message { get; set; } = string.Empty;
     }
 }
- 
+  
