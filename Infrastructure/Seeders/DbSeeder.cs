@@ -3,7 +3,7 @@ using ExamDynamicsAPI.Infrastructure.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
-namespace ExamDynamicsAPI.Infrastructure.Seeders
+namespace ExamDynamicsAPI.Infrastructure.Seeders 
 {
     public static class DbSeeder
     {

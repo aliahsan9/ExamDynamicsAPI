@@ -6,7 +6,7 @@ namespace ExamDynamicsAPI.Core.Interfaces.Repositories
 {
     public interface IAnnouncementRepository
     {
-        Task<IEnumerable<Announcement>> GetAllAsync();
+        Task<IEnumerable<Announcement>> GetAllAsync(); 
         Task<Announcement?> GetByIdAsync(int id);
         Task AddAsync(Announcement announcement);
         void Update(Announcement announcement);
