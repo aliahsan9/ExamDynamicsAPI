@@ -19,15 +19,15 @@ namespace ExamDynamicsAPI.WebAPI.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var users = await _userService.GetAllUsersAsync(); // ✅ FIX
+            var users = await _userService.GetAllUsersAsync(); 
             return Ok(users);
         }
 
         // GET: api/User/{id}
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetById(int id) // changed Guid → int ✅ FIX
+        public async Task<IActionResult> GetById(int id) // changed Guid → int
         {
-            var user = await _userService.GetUserByIdAsync(id); // ✅ FIX
+            var user = await _userService.GetUserByIdAsync(id); 
             if (user == null)
                 return NotFound();
 
@@ -36,23 +36,23 @@ namespace ExamDynamicsAPI.WebAPI.Controllers
 
         // POST: api/User
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] CreateUserDto userDto) // ✅ FIX type
+        public async Task<IActionResult> Create([FromBody] CreateUserDto userDto) 
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var createdUser = await _userService.CreateUserAsync(userDto); // ✅ FIX
+            var createdUser = await _userService.CreateUserAsync(userDto);
             return CreatedAtAction(nameof(GetById), new { id = createdUser.Id }, createdUser);
         }
 
         // PUT: api/User/{id}
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, [FromBody] UpdateUserDto userDto) // ✅ FIX type
+        public async Task<IActionResult> Update(int id, [FromBody] UpdateUserDto userDto) 
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var updatedUser = await _userService.UpdateUserAsync(id, userDto); // ✅ FIX
+            var updatedUser = await _userService.UpdateUserAsync(id, userDto);  
             if (updatedUser == null)
                 return NotFound();
 
@@ -61,9 +61,9 @@ namespace ExamDynamicsAPI.WebAPI.Controllers
 
         // DELETE: api/User/{id}
         [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id) // Guid → int ✅ FIX
+        public async Task<IActionResult> Delete(int id) // Guid → int
         {
-            var result = await _userService.DeleteUserAsync(id); // ✅ FIX
+            var result = await _userService.DeleteUserAsync(id); 
             if (!result)
                 return NotFound();
 
