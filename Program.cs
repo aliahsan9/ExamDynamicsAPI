@@ -150,7 +150,7 @@ using (var scope = app.Services.CreateScope())
     await DbSeeder.SeedAsync(dbContext, userManager, roleManager);
 }
 
-// ------------------- Middleware -------------------
+// ------------------- Middleware ------------------
 //if (app.Environment.IsDevelopment())
 //{
     app.UseSwagger();
