@@ -91,12 +91,11 @@ builder.Services.AddControllers();
 // CORS
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowAngularApp", policy =>
+    options.AddPolicy("AllowAll", policy =>
     {
-        policy.WithOrigins("https://exam-dynamics-ui.vercel.app/")
-              .AllowAnyMethod()
+        policy.AllowAnyOrigin()
               .AllowAnyHeader()
-              .AllowCredentials();
+              .AllowAnyMethod();
     });
 });
 
@@ -161,7 +160,7 @@ using (var scope = app.Services.CreateScope())
 //}
 
 app.UseHttpsRedirection();
-app.UseCors("AllowAngularApp");
+app.UseCors("AllowAll");
 app.UseAuthentication();
 app.UseAuthorization();
 
