@@ -150,14 +150,14 @@ using (var scope = app.Services.CreateScope())
 }
 
 // ------------------- Middleware ------------------
-//if (app.Environment.IsDevelopment())
-//{
+if (app.Environment.IsDevelopment())
+{
     app.UseSwagger();
     app.UseSwaggerUI(c =>
     {
         c.SwaggerEndpoint("/swagger/v1/swagger.json", "ExamDynamics API v1");
     });
-//}
+}
 
 app.UseHttpsRedirection();
 app.UseCors("AllowAll");
