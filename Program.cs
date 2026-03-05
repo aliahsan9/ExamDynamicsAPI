@@ -16,7 +16,7 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// DbContext
+// DbContext ---
 builder.Services.AddDbContext<ExamDynamicsDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
