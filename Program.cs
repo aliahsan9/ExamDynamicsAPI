@@ -21,7 +21,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 
 // ==========================
-// Database
+// Database Here
 // ==========================
 
 builder.Services.AddDbContext<ExamDynamicsDbContext>(options =>
