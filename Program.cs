@@ -12,7 +12,8 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi;
+using Microsoft.OpenApi.Models;
+using Scalar.AspNetCore;
 
 using System.Text;
 
@@ -148,7 +149,7 @@ builder.Services.AddCors(options =>
 
 
 // ==========================
-// Swagger
+// OpenAPI / Swagger (for Scalar)
 // ==========================
 
 builder.Services.AddEndpointsApiExplorer();
@@ -162,7 +163,7 @@ builder.Services.AddSwaggerGen(options =>
         Description = "ExamDynamics API Documentation"
     });
 
-    // JWT Authorization Button
+    // JWT Authorization (used by Scalar's authorize button)
     options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
         Description = "Enter JWT Token (Example: Bearer your_token)",
@@ -219,8 +220,11 @@ using (var scope = app.Services.CreateScope())
 
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    app.MapSwagger("/openapi/{documentName}.json");
+    app.MapScalarApiReference(options =>
+    {
+        options.WithTitle("ExamDynamics API");
+    });
 }
 
 app.UseHttpsRedirection();
