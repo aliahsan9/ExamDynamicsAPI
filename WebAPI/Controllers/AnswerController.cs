@@ -7,7 +7,7 @@ namespace ExamDynamicsAPI.WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    // [Authorize(Roles = "Admin")] // Only admins can create/update/delete
+    // [Authorize(Roles = "Admin")] // Only admins can create/update/delete/
     public class AnswerController : ControllerBase
     {
         private readonly IAnswerService _answerService;
