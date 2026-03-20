@@ -9,14 +9,12 @@ namespace ExamDynamicsAPI.Infrastructure.Repositories
 
         // ================= Repositories =================
         public IExamRepository Exams { get; }
-        public IBlogPostRepository BlogPosts { get; }
         public IQuestionRepository Questions { get; }
         public IOptionRepository Options { get; }
 
         public ExamDynamicsUnitOfWork(
             ExamDynamicsDbContext context,
             IExamRepository exams,
-            IBlogPostRepository blogPosts,
             IQuestionRepository questions,
             IOptionRepository options
         )
@@ -24,7 +22,6 @@ namespace ExamDynamicsAPI.Infrastructure.Repositories
             _context = context;
 
             Exams = exams;
-            BlogPosts = blogPosts;
             Questions = questions;
             Options = options;
         }

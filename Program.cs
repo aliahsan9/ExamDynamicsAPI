@@ -69,7 +69,7 @@ builder.Services.AddAuthentication(options =>
         ValidAudience = jwtIssuer,
 
         IssuerSigningKey = new SymmetricSecurityKey(
-            Encoding.UTF8.GetBytes(jwtKey))
+            Encoding.UTF8.GetBytes(jwtKey!))
     };
 });
 
@@ -108,9 +108,6 @@ builder.Services.AddScoped<IMessageRepository, MessageRepository>();
 
 builder.Services.AddScoped<IContactMessageService, ContactMessageService>();
 builder.Services.AddScoped<IContactMessageRepository, ContactMessageRepository>();
-
-builder.Services.AddScoped<IBlogPostService, BlogPostService>();
-builder.Services.AddScoped<IBlogPostRepository, BlogPostRepository>();
 
 builder.Services.AddScoped<IExamDynamicsUnitOfWork, ExamDynamicsUnitOfWork>();
 
