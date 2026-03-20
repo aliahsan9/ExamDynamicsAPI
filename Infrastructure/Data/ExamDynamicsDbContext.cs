@@ -25,7 +25,6 @@ namespace ExamDynamicsAPI.Infrastructure.Data
         // Answers & Quizzes
         public DbSet<Answer> Answers { get; set; } = null!;
         public DbSet<ExamCategory> ExamCategories { get; set; } = null!;
-        public DbSet<BlogPost> BlogPosts { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -50,11 +49,7 @@ namespace ExamDynamicsAPI.Infrastructure.Data
                 .WithMany()
                 .HasForeignKey(m => m.ReceiverId)
                 .OnDelete(DeleteBehavior.Restrict);
-            // ===== BlogPost - Author (User) =====
-            modelBuilder.Entity<BlogPost>()
-                .HasOne(b => b.Author)
-                .WithMany(u => u.BlogPosts)
-                .HasForeignKey(b => b.AuthorId);
+       
 
             // ===== Answer - User & Question =====
             modelBuilder.Entity<Answer>()
