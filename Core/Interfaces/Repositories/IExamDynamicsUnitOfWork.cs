@@ -8,8 +8,6 @@ namespace ExamDynamicsAPI.Core.Interfaces.Repositories
         IQuestionRepository Questions { get; }
         IOptionRepository Options { get; }
      
-        IBlogPostRepository BlogPosts { get; }
-
         // ================= Save Changes =================
         Task<int> CompleteAsync();
     }

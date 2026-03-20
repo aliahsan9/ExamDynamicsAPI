@@ -1,4 +1,3 @@
-using ExamDynamicsAPI.Core.DTOs.BlogPostDTOs;
 using ExamDynamicsAPI.Core.DTOs.ExamDTOs;
 using ExamDynamicsAPI.Core.DTOs.OptionDTOs;
 using ExamDynamicsAPI.Core.DTOs.QuestionDTOs;
@@ -31,10 +30,6 @@ namespace ExamDynamicsAPI.Applications.Mappings
             CreateMap<OptionCreateDto, Option>();
             CreateMap<OptionUpdateDTO, Option>();
 
-            // BlogPost (optional)
-            CreateMap<BlogPost, BlogPostDto>().ReverseMap();
-            CreateMap<CreateBlogPostDto, BlogPost>();
-            CreateMap<UpdateBlogPostDto, BlogPost>();
         }
     }
 }
