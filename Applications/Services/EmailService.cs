@@ -7,18 +7,28 @@ using Microsoft.Extensions.Options;
 namespace ExamDynamicsAPI.Applications.Services
 {
     public class EmailService : IEmailService
+<<<<<<< HEAD
     {
+=======
+    { 
+>>>>>>> 0b8b2b3dbb9259d21d302a46bf22d08f59f80a63
         private readonly EmailSettings _settings;
         private readonly ILogger<EmailService> _logger;
 
         public EmailService(IOptions<EmailSettings> settings, ILogger<EmailService> logger)
         {
+<<<<<<< HEAD
             _settings = settings?.Value ?? throw new ArgumentNullException(nameof(settings), "Email settings are not configured.");
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+=======
+            _settings = settings.Value;
+            _logger = logger;
+>>>>>>> 0b8b2b3dbb9259d21d302a46bf22d08f59f80a63
         }
 
         public async Task SendEmailAsync(string to, string subject, string body)
         {
+<<<<<<< HEAD
             try
             {
                 // Validate required settings
@@ -74,6 +84,31 @@ namespace ExamDynamicsAPI.Applications.Services
                 _logger.LogError(ex, "Unexpected error occurred while sending email to {Recipient}: {Message}", to, ex.Message);
                 throw;
             }
+=======
+            if (string.IsNullOrWhiteSpace(_settings.SmtpServer))
+            {
+                _logger.LogWarning("Email skipped: SMTP server is not configured.");
+                return;
+            }
+
+            using var client = new SmtpClient(_settings.SmtpServer, _settings.Port)
+            {
+                Credentials = new NetworkCredential(_settings.Username, _settings.Password),
+                EnableSsl = _settings.EnableSSL
+            };
+
+            var mailMessage = new MailMessage
+            {
+                From = new MailAddress(_settings.SenderEmail, _settings.SenderName),
+                Subject = subject,
+                Body = body,
+                IsBodyHtml = true
+            };
+
+            mailMessage.To.Add(to);
+
+            await client.SendMailAsync(mailMessage);
+>>>>>>> 0b8b2b3dbb9259d21d302a46bf22d08f59f80a63
         }
     }
 }
