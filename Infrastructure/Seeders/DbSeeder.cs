@@ -19,7 +19,7 @@ namespace ExamDynamicsAPI.Infrastructure.Seeders
             var rand = new Random();
 
             // ==================== Roles ====================
-            var roles = new[] { "Admin", "Student" };
+            var roles = new[] { "Admin"};
             foreach (var roleName in roles)
             {
                 if (!await roleManager.RoleExistsAsync(roleName))
