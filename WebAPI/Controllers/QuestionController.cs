@@ -37,7 +37,7 @@ namespace ExamDynamicsAPI.WebAPI.Controllers
 
         // POST: api/Question
         [HttpPost]
-        public async Task<IActionResult> AddQuestion(Question question)
+        public async Task<IActionResult> AddQuestion([FromBody] Question question)
         {
             var createdQuestion = await _questionService.CreateAsync(question); // Use CreateAsync
             return Ok(createdQuestion);
@@ -45,9 +45,11 @@ namespace ExamDynamicsAPI.WebAPI.Controllers
 
         // PUT: api/Question
         [HttpPut]
-        public async Task<IActionResult> UpdateQuestion(Question question)
+        public async Task<IActionResult> UpdateQuestion([FromBody] Question question)
         {
             var updatedQuestion = await _questionService.UpdateAsync(question);
+            if (updatedQuestion == null)
+                return NotFound();
             return Ok(updatedQuestion);
         }
 

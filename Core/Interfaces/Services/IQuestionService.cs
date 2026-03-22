@@ -7,7 +7,7 @@ namespace ExamDynamicsAPI.Core.Interfaces.Services
         Task<IEnumerable<Question>> GetAllAsync();
         Task<Question?> GetByIdAsync(int id);
         Task<Question> CreateAsync(Question question);
-        Task<Question> UpdateAsync(Question question);
+        Task<Question?> UpdateAsync(Question question);
         Task<bool> DeleteAsync(int id);
     }
 }

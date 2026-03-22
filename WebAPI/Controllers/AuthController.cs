@@ -12,15 +12,18 @@ namespace ExamDynamicsAPI.WebAPI.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly ITokenService _tokenService;
+        private readonly IActivityLogService _activityLog;
 
         public AuthController(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
-            ITokenService tokenService)
+            ITokenService tokenService,
+            IActivityLogService activityLog)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _tokenService = tokenService;
+            _activityLog = activityLog;
         }
 
         [HttpPost("login")]
@@ -37,6 +40,15 @@ namespace ExamDynamicsAPI.WebAPI.Controllers
 
             // Get user roles
             var roles = await _userManager.GetRolesAsync(user);
+
+            try
+            {
+                await _activityLog.LogAsync(user.Id, "Login", "Signed in successfully.");
+            }
+            catch
+            {
+                // Activity logging must not block authentication
+            }
 
             return Ok(new
             {
@@ -69,9 +81,32 @@ namespace ExamDynamicsAPI.WebAPI.Controllers
             // Assign role
             await _userManager.AddToRoleAsync(user, model.Role);
 
+            var created = await _userManager.FindByEmailAsync(model.Email);
+            if (created == null)
+                return BadRequest(new { message = "Registration failed after create." });
+
+            var token = await _tokenService.GenerateJwtTokenAsync(created);
+            var roles = await _userManager.GetRolesAsync(created);
+
+            try
+            {
+                await _activityLog.LogAsync(created.Id, "AccountCreated", "Welcome to ExamDynamics — your account is ready.");
+            }
+            catch
+            {
+            }
+
             return Ok(new
             {
-                message = "User registered successfully."
+                message = "User registered successfully.",
+                token,
+                user = new
+                {
+                    id = created.Id,
+                    username = created.UserName,
+                    email = created.Email,
+                    roles
+                }
             });
         }
     }

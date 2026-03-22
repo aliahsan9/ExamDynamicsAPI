@@ -31,11 +31,19 @@ namespace ExamDynamicsAPI.Infrastructure.Repositories
             return question;
         }
 
-        public async Task<Question> UpdateAsync(Question question)
+        public async Task<Question?> UpdateAsync(Question question)
         {
-            _dbContext.Questions.Update(question);
+            var existing = await _dbContext.Questions.FindAsync(question.QuestionId);
+            if (existing == null)
+                return null;
+
+            existing.Text = question.Text;
+            existing.CorrectAnswer = question.CorrectAnswer;
+            existing.Explanation = question.Explanation;
+            existing.ExamId = question.ExamId;
+
             await _dbContext.SaveChangesAsync();
-            return question;
+            return existing;
         }
 
         public async Task<bool> DeleteAsync(int id)

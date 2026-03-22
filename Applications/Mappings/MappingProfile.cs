@@ -12,6 +12,7 @@ namespace ExamDynamicsAPI.Applications.Mappings
         {
             // User
             CreateMap<ApplicationUser, UserDto>().ReverseMap();
+            CreateMap<ApplicationUser, UserReadDTO>();
             CreateMap<CreateUserDto, ApplicationUser>();
             CreateMap<UpdateUserDto, ApplicationUser>();
 

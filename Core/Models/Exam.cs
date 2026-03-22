@@ -14,5 +14,6 @@ namespace ExamDynamicsAPI.Core.Models
 
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
+        public virtual ICollection<ExamAttempt> Attempts { get; set; } = new HashSet<ExamAttempt>();
     }
 }

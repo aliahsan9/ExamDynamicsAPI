@@ -28,7 +28,7 @@ namespace ExamDynamicsAPI.Applications.Services
             return await _questionRepository.AddAsync(question);
         }
 
-        public async Task<Question> UpdateAsync(Question question)
+        public async Task<Question?> UpdateAsync(Question question)
         {
             return await _questionRepository.UpdateAsync(question);
         }

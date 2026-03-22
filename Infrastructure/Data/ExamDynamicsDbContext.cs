@@ -24,6 +24,8 @@ namespace ExamDynamicsAPI.Infrastructure.Data
         // Answers & Quizzes
         public DbSet<Answer> Answers { get; set; } = null!;
         public DbSet<ExamCategory> ExamCategories { get; set; } = null!;
+        public DbSet<ExamAttempt> ExamAttempts { get; set; } = null!;
+        public DbSet<UserActivity> UserActivities { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -53,6 +55,31 @@ namespace ExamDynamicsAPI.Infrastructure.Data
                 .HasMany(o => o.Answers)
                 .WithOne(a => a.Option)
                 .HasForeignKey(a => a.OptionId);
+
+            modelBuilder.Entity<ExamAttempt>()
+                .HasOne(ea => ea.User)
+                .WithMany(u => u.ExamAttempts)
+                .HasForeignKey(ea => ea.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<ExamAttempt>()
+                .HasOne(ea => ea.Exam)
+                .WithMany(e => e.Attempts)
+                .HasForeignKey(ea => ea.ExamId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<ExamAttempt>()
+                .HasIndex(ea => ea.CertificateCode)
+                .IsUnique();
+
+            modelBuilder.Entity<UserActivity>()
+                .HasOne(a => a.User)
+                .WithMany(u => u.Activities)
+                .HasForeignKey(a => a.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<UserActivity>()
+                .HasIndex(a => new { a.UserId, a.CreatedAtUtc });
         }
     }
 }
