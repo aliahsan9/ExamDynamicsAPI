@@ -4,6 +4,7 @@ namespace ExamDynamicsAPI.Core.Interfaces.Repositories
     {
 
         // ================= Exams & Content =================
+
         IExamRepository Exams { get; }
         IQuestionRepository Questions { get; }
         IOptionRepository Options { get; }
