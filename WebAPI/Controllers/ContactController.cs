@@ -21,6 +21,9 @@ namespace ExamDynamicsAPI.WebAPI.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
+            if (string.IsNullOrWhiteSpace(dto.ResolvedEmail))
+                return BadRequest(new { message = "Email is required." });
+
             await _service.SendMessageAsync(dto);
             return Ok(new { message = "Your message has been sent successfully!" });
         }

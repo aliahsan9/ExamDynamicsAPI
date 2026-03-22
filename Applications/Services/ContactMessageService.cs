@@ -18,42 +18,59 @@ namespace ExamDynamicsAPI.Applications.Services
             _configuration = configuration;
         }
 
-       public async Task SendMessageAsync(ContactMessageDto dto)
-{
-    var contactMessage = new ContactMessage
-    {
-        UserEmail = dto.UserEmail,
-        Message = dto.Message
-    };
-
-    // Save to DB
-    await _repository.AddAsync(contactMessage);
-
-    // Read SMTP settings safely
-    var smtpSection = _configuration.GetSection("SmtpSettings");
-    string smtpServer = smtpSection["Server"] ?? string.Empty;
-
-    int port = 0;
-    if (!int.TryParse(smtpSection["Port"], out port))
-        port = 587; // default port
-
-    string senderEmail = smtpSection["SenderEmail"] ?? string.Empty;
-    string password = smtpSection["Password"] ?? string.Empty;
-    string receiverEmail = smtpSection["ReceiverEmail"] ?? string.Empty;
-
-    using (var client = new SmtpClient(smtpServer, port))
-    {
-        client.Credentials = new NetworkCredential(senderEmail, password);
-        client.EnableSsl = true;
-
-        var mailMessage = new MailMessage(senderEmail, receiverEmail)
+        public async Task SendMessageAsync(ContactMessageDto dto)
         {
-            Subject = "New Contact Message from Website",
-            Body = $"From: {dto.UserEmail}\n\nMessage:\n{dto.Message}"
-        };
+            var visitorEmail = dto.ResolvedEmail;
 
-        await client.SendMailAsync(mailMessage);
-    }
-}
+            var contactMessage = new ContactMessage
+            {
+                UserEmail = visitorEmail,
+                Message = dto.Message
+            };
+
+            await _repository.AddAsync(contactMessage);
+
+            var smtpSection = _configuration.GetSection("SmtpSettings");
+            string smtpServer = smtpSection["Server"] ?? string.Empty;
+
+            int port = 0;
+            if (!int.TryParse(smtpSection["Port"], out port))
+                port = 587;
+
+            string senderEmail = smtpSection["SenderEmail"] ?? string.Empty;
+            string password = smtpSection["Password"] ?? string.Empty;
+            string receiverEmail = smtpSection["ReceiverEmail"] ?? string.Empty;
+
+            using var client = new SmtpClient(smtpServer, port);
+            client.Credentials = new NetworkCredential(senderEmail, password);
+            client.EnableSsl = true;
+
+            var subject = string.IsNullOrWhiteSpace(visitorEmail)
+                ? "New Contact Message from Website"
+                : $"[Contact] {visitorEmail}";
+
+            var body =
+                $"Sender email: {visitorEmail}\r\n\r\nMessage:\r\n{dto.Message}";
+
+            using var mailMessage = new MailMessage(senderEmail, receiverEmail)
+            {
+                Subject = subject,
+                Body = body
+            };
+
+            if (!string.IsNullOrWhiteSpace(visitorEmail))
+            {
+                try
+                {
+                    mailMessage.ReplyToList.Add(new MailAddress(visitorEmail));
+                }
+                catch (FormatException)
+                {
+                    // Invalid address: body still contains the text they typed
+                }
+            }
+
+            await client.SendMailAsync(mailMessage);
+        }
     }
 }
