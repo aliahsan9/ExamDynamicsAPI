@@ -22,7 +22,6 @@ namespace ExamDynamicsAPI.Core.Models
         [ForeignKey(nameof(QuestionId))]
         public Question Question { get; set; } = null!;
 
-        // Optional Foreign Key to Option (for selected multiple-choice answer)
         public int? OptionId { get; set; }
 
         [ForeignKey(nameof(OptionId))]
