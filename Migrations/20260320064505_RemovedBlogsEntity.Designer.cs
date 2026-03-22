@@ -4,6 +4,7 @@ using ExamDynamicsAPI.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ExamDynamicsAPI.Migrations
 {
     [DbContext(typeof(ExamDynamicsDbContext))]
-    partial class ExamDynamicsDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260320064505_RemovedBlogsEntity")]
+    partial class RemovedBlogsEntity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -252,6 +255,40 @@ namespace ExamDynamicsAPI.Migrations
                     b.ToTable("ExamCategories");
                 });
 
+            modelBuilder.Entity("ExamDynamicsAPI.Core.Models.Message", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasMaxLength(2000)
+                        .HasColumnType("nvarchar(2000)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsRead")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("ReceiverId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SenderId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ReceiverId");
+
+                    b.HasIndex("SenderId");
+
+                    b.ToTable("Messages");
+                });
+
             modelBuilder.Entity("ExamDynamicsAPI.Core.Models.Option", b =>
                 {
                     b.Property<int>("OptionId")
@@ -444,6 +481,25 @@ namespace ExamDynamicsAPI.Migrations
                     b.HasOne("ExamDynamicsAPI.Core.Models.ExamCategory", null)
                         .WithMany("Exams")
                         .HasForeignKey("ExamCategoryId");
+                });
+
+            modelBuilder.Entity("ExamDynamicsAPI.Core.Models.Message", b =>
+                {
+                    b.HasOne("ExamDynamicsAPI.Core.Models.ApplicationUser", "Receiver")
+                        .WithMany()
+                        .HasForeignKey("ReceiverId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("ExamDynamicsAPI.Core.Models.ApplicationUser", "Sender")
+                        .WithMany()
+                        .HasForeignKey("SenderId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Receiver");
+
+                    b.Navigation("Sender");
                 });
 
             modelBuilder.Entity("ExamDynamicsAPI.Core.Models.Option", b =>

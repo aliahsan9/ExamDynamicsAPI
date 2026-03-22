@@ -21,7 +21,6 @@ namespace ExamDynamicsAPI.Infrastructure.Data
         // Questions & Options
         public DbSet<Question> Questions { get; set; } = null!;
         public DbSet<Option> Options { get; set; } = null!;
-        public DbSet<Message> Messages { get; set; } = null!;
         // Answers & Quizzes
         public DbSet<Answer> Answers { get; set; } = null!;
         public DbSet<ExamCategory> ExamCategories { get; set; } = null!;
@@ -36,20 +35,7 @@ namespace ExamDynamicsAPI.Infrastructure.Data
                 .HasMany(q => q.Options)
                 .WithOne(o => o.Question)
                 .HasForeignKey(o => o.QuestionId);
-                
-            // ===== Messages (avoid multiple cascade paths) =====
-            modelBuilder.Entity<Message>()
-                .HasOne(m => m.Sender)
-                .WithMany()
-                .HasForeignKey(m => m.SenderId)
-                .OnDelete(DeleteBehavior.Restrict);
-
-            modelBuilder.Entity<Message>()
-                .HasOne(m => m.Receiver)
-                .WithMany()
-                .HasForeignKey(m => m.ReceiverId)
-                .OnDelete(DeleteBehavior.Restrict);
-       
+              
 
             // ===== Answer - User & Question =====
             modelBuilder.Entity<Answer>()
