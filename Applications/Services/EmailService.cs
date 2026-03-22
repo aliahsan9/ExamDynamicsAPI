@@ -9,14 +9,22 @@ namespace ExamDynamicsAPI.Applications.Services
     public class EmailService : IEmailService
     { 
         private readonly EmailSettings _settings;
+        private readonly ILogger<EmailService> _logger;
 
-        public EmailService(IOptions<EmailSettings> settings)
+        public EmailService(IOptions<EmailSettings> settings, ILogger<EmailService> logger)
         {
             _settings = settings.Value;
+            _logger = logger;
         }
 
         public async Task SendEmailAsync(string to, string subject, string body)
         {
+            if (string.IsNullOrWhiteSpace(_settings.SmtpServer))
+            {
+                _logger.LogWarning("Email skipped: SMTP server is not configured.");
+                return;
+            }
+
             using var client = new SmtpClient(_settings.SmtpServer, _settings.Port)
             {
                 Credentials = new NetworkCredential(_settings.Username, _settings.Password),

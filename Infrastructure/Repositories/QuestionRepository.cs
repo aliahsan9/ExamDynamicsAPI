@@ -16,12 +16,12 @@ namespace ExamDynamicsAPI.Infrastructure.Repositories
 
         public async Task<IEnumerable<Question>> GetAllAsync()
         {
-            return await _dbContext.Questions.ToListAsync();
+            return await _dbContext.Questions.AsNoTracking().ToListAsync();
         }
 
         public async Task<Question?> GetByIdAsync(int id)
         {
-            return await _dbContext.Questions.FindAsync(id);
+            return await _dbContext.Questions.AsNoTracking().FirstOrDefaultAsync(q => q.QuestionId == id);
         }
 
         public async Task<Question> AddAsync(Question question)
