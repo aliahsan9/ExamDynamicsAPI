@@ -3,7 +3,7 @@ namespace ExamDynamicsAPI.Core.Interfaces.Repositories
     public interface IExamDynamicsUnitOfWork : IDisposable
     {
 
-          IExamRepository Exams { get; }
+        IExamRepository Exams { get; }
         IQuestionRepository Questions { get; }
         IOptionRepository Options { get; }
      
