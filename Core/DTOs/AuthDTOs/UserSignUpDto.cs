@@ -4,6 +4,6 @@ namespace ExamDynamicsAPI.Core.DTOs.AuthDTOs
     {
         public string Username { get; set; } = string.Empty;
         public string Password { get; set; } = string.Empty;
-        public string Role { get; set; } = string.Empty; // "Admin" or "User"
+        public string Role { get; set; } = string.Empty; 
     }
 }

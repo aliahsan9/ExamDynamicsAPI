@@ -6,6 +6,6 @@ namespace ExamDynamicsAPI.Core.DTOs.QuestionDTOs
         public int ExamId { get; set; }
         public string? Explanation { get; set; }
         public string Text { get; set; } = string.Empty;
-        public string QuestionType { get; set; } = string.Empty; // MCQ, True/False, etc.
+        public string QuestionType { get; set; } = string.Empty; 
     }
 }
