@@ -48,21 +48,7 @@ namespace ExamDynamicsAPI.Infrastructure.Seeders
                 await userManager.AddToRoleAsync(adminUser, "Admin");
             }
 
-            var studentUser = await userManager.FindByEmailAsync("student@example.com");
-            if (studentUser == null)
-            {
-                studentUser = new ApplicationUser
-                {
-                    UserName = "student",
-                    FullName = "Student User",
-                    Email = "student@example.com",
-                    CreatedAt = DateTime.UtcNow,
-                    EmailConfirmed = true
-                };
-                await userManager.CreateAsync(studentUser, "Student@123");
-                await userManager.AddToRoleAsync(studentUser, "Student");
-            }
-
+            
             // ==================== Exams ====================
             if (!context.Exams.Any())
             {
