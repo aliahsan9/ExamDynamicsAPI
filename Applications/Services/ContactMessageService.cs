@@ -29,8 +29,8 @@ namespace ExamDynamicsAPI.Applications.Services
             };
 
             await _repository.AddAsync(contactMessage);
-
-            var smtpSection = _configuration.GetSection("SmtpSettings");
+ 
+            var smtpSection = _configuration.GetSection("EmailSettings");
             string smtpServer = smtpSection["Server"] ?? string.Empty;
 
             int port = 0;
