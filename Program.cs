@@ -70,7 +70,7 @@ try
         .AddDefaultTokenProviders();
 
     // ==========================
-    // JWT + OAuth (Google / Facebook)
+    // JWT + OAuth (Google Or Facebook)
     // ==========================
 
     var jwtKey = builder.Configuration["Jwt:Key"];
