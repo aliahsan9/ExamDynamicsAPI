@@ -106,19 +106,6 @@ namespace ExamDynamicsAPI.Applications.Services
                     }
                 }
             }
-
-            // Save chat history if answer is available
-            // if (answerDto != null)
-            // {
-            //     var chatHistory = new ChatHistory
-            //     {
-            //         Question = request.Question,
-            //         Answer = answerDto.Answer
-            //     };
-            //     // _context.ChatHistories.Add(chatHistory);
-            //     await _context.SaveChangesAsync();
-            // }
-
             return answerDto!;
         }
     }

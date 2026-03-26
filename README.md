@@ -34,14 +34,16 @@ This API can be integrated with **Angular, React, or any frontend framework**.
 
 This project follows a **Clean / Onion Architecture** approach:
 
-```
+---
+
 ExamDynamicsAPI
 │
 ├── ExamDynamics.API          → Controllers & Middleware
 ├── ExamDynamics.Application  → DTOs, Interfaces, Business Logic
 ├── ExamDynamics.Domain       → Entities & Enums
 ├── ExamDynamics.Infrastructure → EF Core, Database, Services
-```
+
+---
 
 ### Why This Architecture?
 
@@ -67,16 +69,18 @@ ExamDynamicsAPI
 
 The API uses **JWT Authentication** to secure endpoints.
 
-### Authentication Flow:
+### Authentication Flow
 
 1. User registers or logs in
 2. Server generates a JWT token
 3. Token is sent in the Authorization Header
 4. Protected endpoints validate the token
 
-```
+---
+
 Authorization: Bearer <your_token_here>
-```
+
+---
 
 Roles supported:
 
@@ -113,10 +117,12 @@ Relationships are managed using **EF Core navigation properties**.
 
 ### Clone the Repository
 
-```
+---
+
 git clone https://github.com/your-username/ExamDynamicsAPI.git
 cd ExamDynamicsAPI
-```
+
+---
 
 ---
 
@@ -128,11 +134,11 @@ Update the `appsettings.json` file:
 * JWT Secret Key
 * Token expiration settings
 
-```
+---
+
 "ConnectionStrings": {
   "DefaultConnection": "Server=.;Database=ExamDynamicsDB;Trusted_Connection=True;"
 }
-```
 
 ---
 
@@ -140,10 +146,12 @@ Update the `appsettings.json` file:
 
 Run the following commands:
 
-```
+---
+
 Add-Migration InitialCreate
 Update-Database
-```
+
+---
 
 This will create the database schema automatically.
 
@@ -156,9 +164,9 @@ This will create the database schema automatically.
 3. Press **Run (F5)**
 4. Swagger UI will open at:
 
-```
+---
+
 https://localhost:<port>/swagger
-```
 
 ---
 

@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using ExamDynamicsAPI.Core.Models;
 
 namespace ExamDynamicsAPI.Core.Models
 {
@@ -24,15 +25,8 @@ namespace ExamDynamicsAPI.Core.Models
         // Relations
         public ICollection<Option>? Options { get; set; }
 
-<<<<<<< HEAD
-        // Add this for Answers
+          // Add this for Answers
         public ICollection<Answer>? Answers { get; set; }
-    }
+    
+  }
 }
- 
-=======
-        // ✅ Add this for Answers
-        public ICollection<Answer>? Answers { get; set; }
-    }
-}
->>>>>>> 0b8b2b3dbb9259d21d302a46bf22d08f59f80a63

@@ -23,7 +23,7 @@ namespace ExamDynamicsAPI.Applications.Services
             // Map DTO to entity
             var answer = _mapper.Map<Answer>(dto);
 
-            // ✅ Set the logged-in user's Id
+            // Set the logged-in user's Id
             answer.UserId = userId;
 
             await _answerRepository.AddAsync(answer);

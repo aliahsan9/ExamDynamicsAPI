@@ -29,7 +29,7 @@ namespace ExamDynamicsAPI.Infrastructure.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            // 👇 IMPORTANT: Identity setup
+            // IMPORTANT: Identity setup
             base.OnModelCreating(modelBuilder);
 
                 // ===== Question - Option (1:Many) =====
