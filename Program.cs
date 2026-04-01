@@ -126,13 +126,9 @@ try
     // =========================
     builder.Services.AddHttpClient();
 builder.Services.AddMemoryCache();
-    builder.Services.Configure<EmailSettings>(
-        builder.Configuration.GetSection("EmailSettings"));
-
-    builder.Services.AddScoped<IEmailService, EmailService>();
+ 
     builder.Services.AddScoped<IChatService, ChatService>();
     builder.Services.AddScoped<ITokenService, TokenService>();
-    builder.Services.AddScoped<IAuthPasswordService, AuthPasswordService>();
     builder.Services.AddScoped<IExternalAuthCompletionService, ExternalAuthCompletionService>();
 
     builder.Services.AddScoped<IUserService, UserService>();
