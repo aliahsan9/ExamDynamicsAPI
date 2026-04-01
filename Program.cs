@@ -17,9 +17,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using Scalar.AspNetCore;
-using Serilog;
 
+using Serilog;
 using System.Text;
 
 Log.Logger = new LoggerConfiguration()
@@ -30,19 +29,18 @@ try
 {
     var builder = WebApplication.CreateBuilder(args);
 
+    // ==========================
+    // Logging (Serilog)
+    // ==========================
     builder.Host.UseSerilog((ctx, _, lc) => lc
         .ReadFrom.Configuration(ctx.Configuration)
         .Enrich.FromLogContext()
         .WriteTo.Console()
-        .WriteTo.File(
-            path: Path.Combine("logs", "examdynamics-.log"),
-            rollingInterval: RollingInterval.Day,
-            retainedFileCountLimit: 14));
+        .WriteTo.File("logs/examdynamics-.log", rollingInterval: RollingInterval.Day));
 
     // ==========================
     // Database
     // ==========================
-
     if (builder.Environment.IsEnvironment("IntegrationTests"))
     {
         builder.Services.AddDbContext<ExamDynamicsDbContext>(options =>
@@ -51,28 +49,25 @@ try
     else
     {
         builder.Services.AddDbContext<ExamDynamicsDbContext>(options =>
-            options.UseSqlServer(
-                builder.Configuration.GetConnectionString("DefaultConnection")));
+            options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
     }
 
     // ==========================
     // Identity
     // ==========================
-
     builder.Services.AddIdentity<ApplicationUser, ApplicationRole>(options =>
-        {
-            options.Password.RequiredLength = 6;
-            options.Password.RequireUppercase = true;
-            options.Password.RequireNonAlphanumeric = false;
-            options.User.RequireUniqueEmail = true;
-        })
-        .AddEntityFrameworkStores<ExamDynamicsDbContext>()
-        .AddDefaultTokenProviders();
+    {
+        options.Password.RequiredLength = 6;
+        options.Password.RequireUppercase = true;
+        options.Password.RequireNonAlphanumeric = false;
+        options.User.RequireUniqueEmail = true;
+    })
+    .AddEntityFrameworkStores<ExamDynamicsDbContext>()
+    .AddDefaultTokenProviders();
 
     // ==========================
-    // JWT + OAuth (Google / Facebook)
+    // JWT Authentication
     // ==========================
-
     var jwtKey = builder.Configuration["Jwt:Key"];
     var jwtIssuer = builder.Configuration["Jwt:Issuer"];
     var jwtAudience = builder.Configuration["Jwt:Audience"] ?? jwtIssuer;
@@ -96,59 +91,49 @@ try
         };
     });
 
+    // ==========================
+    // Google Login
+    // ==========================
     var googleClientId = builder.Configuration["Authentication:Google:ClientId"];
     var googleSecret = builder.Configuration["Authentication:Google:ClientSecret"];
-    if (!string.IsNullOrWhiteSpace(googleClientId) && !string.IsNullOrWhiteSpace(googleSecret))
+
+    if (!string.IsNullOrWhiteSpace(googleClientId))
     {
-        authBuilder.AddGoogle(GoogleDefaults.AuthenticationScheme, options =>
+        authBuilder.AddGoogle(options =>
         {
-            options.ClientId = googleClientId;
-            options.ClientSecret = googleSecret;
-            options.CallbackPath = "/signin-google";
-            options.SaveTokens = true;
-            options.SignInScheme = IdentityConstants.ExternalScheme;
+            options.ClientId = googleClientId!;
+            options.ClientSecret = googleSecret!;
         });
     }
 
+    // ==========================
+    // Facebook Login
+    // ==========================
     var fbAppId = builder.Configuration["Authentication:Facebook:AppId"];
     var fbSecret = builder.Configuration["Authentication:Facebook:AppSecret"];
-    if (!string.IsNullOrWhiteSpace(fbAppId) && !string.IsNullOrWhiteSpace(fbSecret))
+
+    if (!string.IsNullOrWhiteSpace(fbAppId))
     {
-        authBuilder.AddFacebook(FacebookDefaults.AuthenticationScheme, options =>
+        authBuilder.AddFacebook(options =>
         {
-            options.AppId = fbAppId;
-            options.AppSecret = fbSecret;
-            options.CallbackPath = "/signin-facebook";
-            options.SaveTokens = true;
-            options.SignInScheme = IdentityConstants.ExternalScheme;
-            options.Scope.Add("email");
-            options.Scope.Add("public_profile");
+            options.AppId = fbAppId!;
+            options.AppSecret = fbSecret!;
         });
     }
 
     // ==========================
-    // Caching & health
+    // Services
     // ==========================
-
-    builder.Services.AddMemoryCache();
-    builder.Services.AddHealthChecks()
-        .AddDbContextCheck<ExamDynamicsDbContext>("database", tags: new[] { "db", "sql" });
-
-    // ==========================
-    // Services & Repositories
-    // ==========================
-
     builder.Services.AddHttpClient();
-
-    builder.Services.AddScoped<IChatService, ChatService>();
-    builder.Services.AddScoped<ITokenService, TokenService>();
-    builder.Services.AddScoped<IAuthPasswordService, AuthPasswordService>();
-    builder.Services.AddScoped<IExternalAuthCompletionService, ExternalAuthCompletionService>();
-
+builder.Services.AddMemoryCache();
     builder.Services.Configure<EmailSettings>(
         builder.Configuration.GetSection("EmailSettings"));
 
     builder.Services.AddScoped<IEmailService, EmailService>();
+    builder.Services.AddScoped<IChatService, ChatService>();
+    builder.Services.AddScoped<ITokenService, TokenService>();
+    builder.Services.AddScoped<IAuthPasswordService, AuthPasswordService>();
+    builder.Services.AddScoped<IExternalAuthCompletionService, ExternalAuthCompletionService>();
 
     builder.Services.AddScoped<IUserService, UserService>();
     builder.Services.AddScoped<IUserRepository, UserRepository>();
@@ -173,41 +158,34 @@ try
     builder.Services.AddScoped<IPerformanceService, PerformanceService>();
 
     builder.Services.AddScoped<IExamDynamicsUnitOfWork, ExamDynamicsUnitOfWork>();
-
     builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 
     // ==========================
     // AutoMapper
     // ==========================
-
-    builder.Services.AddAutoMapper(
-        typeof(MappingProfile),
-        typeof(AnswerProfile));
+    builder.Services.AddAutoMapper(typeof(MappingProfile), typeof(AnswerProfile));
 
     // ==========================
     // Controllers
     // ==========================
-
     builder.Services.AddControllers();
 
     // ==========================
     // CORS
     // ==========================
-
     builder.Services.AddCors(options =>
     {
         options.AddPolicy("AllowAll", policy =>
         {
             policy.AllowAnyOrigin()
-                .AllowAnyHeader()
-                .AllowAnyMethod();
+                  .AllowAnyHeader()
+                  .AllowAnyMethod();
         });
     });
 
     // ==========================
-    // OpenAPI / Swagger (Scalar)
+    // Swagger (IMPORTANT)
     // ==========================
-
     builder.Services.AddEndpointsApiExplorer();
 
     builder.Services.AddSwaggerGen(options =>
@@ -215,18 +193,18 @@ try
         options.SwaggerDoc("v1", new OpenApiInfo
         {
             Title = "ExamDynamics API",
-            Version = "v1",
-            Description = "ExamDynamics API Documentation"
+            Version = "v1"
         });
 
+        // 🔐 JWT Support
         options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
         {
-            Description = "Enter JWT Token (Example: Bearer your_token)",
             Name = "Authorization",
-            In = ParameterLocation.Header,
             Type = SecuritySchemeType.Http,
             Scheme = "bearer",
-            BearerFormat = "JWT"
+            BearerFormat = "JWT",
+            In = ParameterLocation.Header,
+            Description = "Enter: Bearer {your JWT token}"
         });
 
         options.AddSecurityRequirement(new OpenApiSecurityRequirement
@@ -240,39 +218,29 @@ try
                         Id = "Bearer"
                     }
                 },
-                Array.Empty<string>()
+                new string[] {}
             }
         });
     });
 
     var app = builder.Build();
 
+    // ==========================
+    // DB Migration + Seeding
+    // ==========================
     using (var scope = app.Services.CreateScope())
     {
-        var dbContext = scope.ServiceProvider.GetRequiredService<ExamDynamicsDbContext>();
+        var db = scope.ServiceProvider.GetRequiredService<ExamDynamicsDbContext>();
         var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
         var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<ApplicationRole>>();
 
-        if (app.Environment.IsEnvironment("IntegrationTests"))
-        {
-            await dbContext.Database.EnsureCreatedAsync();
-        }
-        else
-        {
-            await dbContext.Database.MigrateAsync();
-            await DbSeeder.SeedAsync(dbContext, userManager, roleManager);
-        }
+        await db.Database.MigrateAsync();
+        await DbSeeder.SeedAsync(db, userManager, roleManager);
     }
 
-    if (app.Environment.IsDevelopment())
-    {
-        app.MapSwagger("/openapi/{documentName}.json");
-        app.MapScalarApiReference(options =>
-        {
-            options.WithTitle("ExamDynamics API");
-        });
-    }
-
+    // ==========================
+    // Middleware
+    // ==========================
     app.UseMiddleware<GlobalExceptionMiddleware>();
 
     app.UseSerilogRequestLogging();
@@ -284,36 +252,21 @@ try
     app.UseAuthentication();
     app.UseAuthorization();
 
-    app.MapHealthChecks("/health", new HealthCheckOptions
+    // ✅ Swagger UI ENABLED
+    app.UseSwagger();
+    app.UseSwaggerUI(options =>
     {
-        ResponseWriter = async (context, report) =>
-        {
-            context.Response.ContentType = "application/json";
-            var result = System.Text.Json.JsonSerializer.Serialize(new
-            {
-                status = report.Status.ToString(),
-                totalDuration = report.TotalDuration.TotalMilliseconds,
-                checks = report.Entries.Select(e => new
-                {
-                    name = e.Key,
-                    status = e.Value.Status.ToString(),
-                    description = e.Value.Description,
-                    duration = e.Value.Duration.TotalMilliseconds
-                })
-            });
-            await context.Response.WriteAsync(result);
-        }
+        options.SwaggerEndpoint("/swagger/v1/swagger.json", "ExamDynamics API v1");
+        options.RoutePrefix = string.Empty; // open at root
     });
 
     app.MapControllers();
-
-    Log.Information("ExamDynamics API starting");
 
     app.Run();
 }
 catch (Exception ex)
 {
-    Log.Fatal(ex, "Application terminated unexpectedly");
+    Log.Fatal(ex, "Application crashed");
 }
 finally
 {
