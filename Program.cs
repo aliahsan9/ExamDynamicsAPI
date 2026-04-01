@@ -121,9 +121,9 @@ try
         });
     }
 
-    // ==========================
+    // =========================
     // Services
-    // ==========================
+    // =========================
     builder.Services.AddHttpClient();
 builder.Services.AddMemoryCache();
     builder.Services.Configure<EmailSettings>(
