@@ -9,7 +9,7 @@ namespace ExamDynamicsAPI.Core.DTOs.ContactMessageDTOs
 
         [JsonPropertyName("email")]
         public string? Email { get; set; }
-
+ 
         public string Message { get; set; } = string.Empty;
 
         [JsonIgnore]
