@@ -7,3 +7,4 @@ namespace ExamDynamicsAPI.Core.Interfaces.Services
         Task SendMessageAsync(ContactMessageDto dto);
     }
 }
+ 

@@ -12,7 +12,9 @@ namespace ExamDynamicsAPI.Applications.Services
         private readonly IContactMessageRepository _repository;
         private readonly IConfiguration _configuration;
 
-        public ContactMessageService(IContactMessageRepository repository, IConfiguration configuration)
+        public ContactMessageService(
+            IContactMessageRepository repository,
+            IConfiguration configuration)
         {
             _repository = repository;
             _configuration = configuration;
@@ -20,8 +22,13 @@ namespace ExamDynamicsAPI.Applications.Services
 
         public async Task SendMessageAsync(ContactMessageDto dto)
         {
-            var visitorEmail = dto.ResolvedEmail;
+            // ✅ Resolve email
+            var visitorEmail = dto.ResolvedEmail?.Trim();
 
+            if (string.IsNullOrWhiteSpace(visitorEmail))
+                throw new Exception("Visitor email is required.");
+
+            // ✅ Save to DB
             var contactMessage = new ContactMessage
             {
                 UserEmail = visitorEmail,
@@ -29,47 +36,62 @@ namespace ExamDynamicsAPI.Applications.Services
             };
 
             await _repository.AddAsync(contactMessage);
- 
-            var smtpSection = _configuration.GetSection("EmailSettings");
-            string smtpServer = smtpSection["Server"] ?? string.Empty;
 
-            int port = 0;
-            if (!int.TryParse(smtpSection["Port"], out port))
-                port = 587;
+            // ✅ Read config (CORRECT KEYS)
+            var smtp = _configuration.GetSection("EmailSettings");
 
-            string senderEmail = smtpSection["SenderEmail"] ?? string.Empty;
-            string password = smtpSection["Password"] ?? string.Empty;
-            string receiverEmail = smtpSection["ReceiverEmail"] ?? string.Empty;
+            string smtpServer = smtp["SmtpServer"] ?? throw new Exception("SmtpServer missing");
+            int port = int.TryParse(smtp["Port"], out var p) ? p : 587;
 
-            using var client = new SmtpClient(smtpServer, port);
-            client.Credentials = new NetworkCredential(senderEmail, password);
-            client.EnableSsl = true;
+            string senderEmail = smtp["SenderEmail"] ?? throw new Exception("SenderEmail missing");
+            string username = smtp["Username"] ?? senderEmail; // fallback
+            string password = smtp["Password"] ?? throw new Exception("Password missing");
 
-            var subject = string.IsNullOrWhiteSpace(visitorEmail)
-                ? "New Contact Message from Website"
-                : $"[Contact] {visitorEmail}";
+            // ✅ Use sender as receiver (admin inbox)
+            string receiverEmail = senderEmail;
 
-            var body =
-                $"Sender email: {visitorEmail}\r\n\r\nMessage:\r\n{dto.Message}";
-
-            using var mailMessage = new MailMessage(senderEmail, receiverEmail)
+            // ✅ Create SMTP client (FIXED)
+            using var client = new SmtpClient(smtpServer, port)
             {
-                Subject = subject,
-                Body = body
+                Credentials = new NetworkCredential(username, password),
+                EnableSsl = true,
+                UseDefaultCredentials = false
             };
 
-            if (!string.IsNullOrWhiteSpace(visitorEmail))
+            // ✅ Email content
+            var subject = $"[Contact] {visitorEmail}";
+            var body = $@"
+New Contact Message:
+
+From: {visitorEmail}
+
+Message:
+{dto.Message}
+";
+
+            // ✅ Create mail message
+            using var mailMessage = new MailMessage
             {
-                try
-                {
-                    mailMessage.ReplyToList.Add(new MailAddress(visitorEmail));
-                }
-                catch (FormatException)
-                {
-                    // Invalid address: body still contains the text they typed
-                }
+                From = new MailAddress(senderEmail, "ExamDynamics"),
+                Subject = subject,
+                Body = body,
+                IsBodyHtml = false
+            };
+
+            // ✅ IMPORTANT: add receiver properly
+            mailMessage.To.Add(receiverEmail);
+
+            // ✅ Add reply-to (safe)
+            try
+            {
+                mailMessage.ReplyToList.Add(new MailAddress(visitorEmail));
+            }
+            catch
+            {
+                // ignore invalid email format
             }
 
+            // ✅ Send email
             await client.SendMailAsync(mailMessage);
         }
     }

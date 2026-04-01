@@ -7,3 +7,4 @@ namespace ExamDynamicsAPI.Core.Interfaces.Repositories
         Task AddAsync(ContactMessage contactMessage);
     }
 }
+ 
