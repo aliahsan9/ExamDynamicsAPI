@@ -126,6 +126,14 @@ try
     // =========================
     builder.Services.AddHttpClient();
 builder.Services.AddMemoryCache();
+
+// AI + RAG services
+
+builder.Services.AddSignalR();
+
+builder.Services.AddScoped<IRagService, RagService>();
+builder.Services.AddScoped<IAIService, OpenAIService>();
+builder.Services.AddScoped<OpenAIService>();
  
     builder.Services.AddScoped<ITokenService, TokenService>();
     builder.Services.AddScoped<IExternalAuthCompletionService, ExternalAuthCompletionService>();
