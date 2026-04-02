@@ -127,7 +127,6 @@ try
     builder.Services.AddHttpClient();
 builder.Services.AddMemoryCache();
  
-    builder.Services.AddScoped<IChatService, ChatService>();
     builder.Services.AddScoped<ITokenService, TokenService>();
     builder.Services.AddScoped<IExternalAuthCompletionService, ExternalAuthCompletionService>();
 
