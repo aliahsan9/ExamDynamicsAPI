@@ -1,4 +1,5 @@
 using ExamDynamicsAPI.Applications.Services;
+using ExamDynamicsAPI.Core.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ExamDynamicsAPI.WebAPI.Controllers
@@ -15,10 +16,10 @@ public class ChatController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> Ask([FromBody] string question)
-    {
-        await _chatService.AskQuestion(question);
-        return Ok();
-    }
+public async Task<IActionResult> Ask([FromBody] ChatRequest request)
+{
+    var answer = await _chatService.AskQuestion(request.Message);
+    return Ok(answer);
+}
 }
 }
